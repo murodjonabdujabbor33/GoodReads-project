@@ -1,5 +1,7 @@
+import django.contrib.admin
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class Book(models.Model):
@@ -16,3 +18,11 @@ class Author(models.Model):
 class BookAuthor(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+class BookReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    comment = models.TextField()
+    starts_given = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
